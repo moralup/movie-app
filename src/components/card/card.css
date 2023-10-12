@@ -1,0 +1,136 @@
+p, div{
+    margin: 0;
+    padding: 0;
+}
+.card{
+    display: flex;
+    gap: 20px;
+    width: 451px;
+    height: 279px; 
+    box-shadow: 5px 10px 20px #D9D9D9;
+    box-sizing: border-box
+}
+
+.card-image{
+    width: 183px;
+    height: 279px;
+}
+
+.opacity{
+    opacity: 0.4;
+    transition: all 1s ease-in
+}
+.anti-opacity{
+    opacity: 1 !important;
+    transition: all 1s ease-in
+}
+
+.card-image-wrapper{
+    flex-shrink: 0;
+    width: 183px;
+    height: 279px;
+    background: black;
+}
+
+.movie-descriptions{
+    display: flex;
+    flex-direction: column;
+    width: 248px;
+    gap: 15px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    position: relative;
+}
+
+.container{
+    position: relative;
+    height: 48px;
+    display: flex;
+    align-items: center;
+}
+
+.movie-title{
+    margin-right: auto;
+    padding-top: 10px;
+    font-size: 20px;
+    font-weight: 400;
+    width: 150px;
+    height: 50px;
+    overflow: hidden
+}
+
+.movie-full-title{
+    position: absolute;
+    left: -190px;
+    top: -15px;
+    margin-right: auto;
+    font-size: 20px;
+    font-weight: 400;
+    width: 130px;
+    height: 50px;
+    color: #e1e1e1;
+    font-family: 'Star';
+    opacity: 0;
+    transition: all 1s ease-in
+}
+
+.movie-rating-circle{
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2px #E9D100 solid;
+    text-align: center;
+    padding-top: 7px;
+    font-size: 12px;
+    box-sizing: border-box;
+    margin-right: 10px
+}
+
+.movie-rating-stars{
+    margin-bottom: 15px;
+    color:#fadb14;
+    font-size: 20px;
+}
+
+.movie-production-date{
+    color: #827E7E;
+    margin-top: -7px;
+}
+
+.genres{
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    flex-wrap:wrap
+}
+
+.genre{
+    font-family: inherit;
+    border: 1px #D9D9D9 solid;
+    border-radius: 2px;
+    padding: 3px 5px;
+    box-sizing: border-box;    
+}
+
+.genre:hover{
+    cursor: pointer;
+    background-color: #1890FF;
+    color: white;
+    box-shadow: 3px 3px 5px rgb(131, 144, 186);  
+}
+.movie-main-content{
+    line-height: 22px;    
+    height: 90px;
+    overflow: hidden;
+    transition: all 0.2s ease-in;
+    margin-bottom: auto
+}
+
+.movie-main-content:hover{
+    font-size: 16px;
+    overflow: auto
+}
+
+.movie-main-content::-webkit-scrollbar {
+    width: 0;
+  }

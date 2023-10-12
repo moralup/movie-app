@@ -1,0 +1,28 @@
+.search-form{
+    display: block;
+    width: 938px;
+    height: 40px;
+    font-size: 16px;    
+    line-height: 22px;    
+    border: 1px #D9D9D9 solid;
+    border-radius: 4px;
+    padding-left: 12px;
+}
+
+.search-form:hover {
+    border: 2px #1890FF solid;
+    padding-top: 0;
+    padding-left: 11px;
+    
+}   
+
+.search-placeholder{
+    font-size: 16px;
+    line-height: 22px;
+    transform: translate(12px, 31px);
+}
+
+.search-form:hover .search-placeholder{
+    transform: translate(7px, 15px);
+    display: none;
+}
