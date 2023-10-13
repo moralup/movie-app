@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import MovieService from '../../service/movie-service'; 
 import './search-movie-form.css';
 
 export default class SearchMovieForm extends Component{    
@@ -7,20 +6,15 @@ export default class SearchMovieForm extends Component{
         name: '',
     };
 
-    movieService = new MovieService();
-
-    onLabelSubmit = async (e) => {
-        e.preventDefault();
-        // this.movieService.getDataById(id).then(a => this.props.updateState({data: a}))
-        const ids = await this.movieService.getId(this.state.name);
-        const data = await this.movieService.getDataById(ids);
-        this.props.updateState({ data: data });
-    }; 
-
     setNameMovie = (e) => {
         this.setState({ name: e.target.value });
+        this.props.clearState();
     };
 
+    onLabelSubmit = (e) => {
+        e.preventDefault();
+        this.props.getData(this.state.name);
+    }
 
     render(){
         return (

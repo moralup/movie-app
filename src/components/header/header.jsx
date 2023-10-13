@@ -3,10 +3,11 @@ import SearchMovieForm from '../search-movie-form';
 import './header.css';
 
 const Header = (props) => {
+    const { getData, clearState } = props
     return (
         <div className="header">
             <Switch/>
-            <SearchMovieForm updateState={props.updateState}/>
+            <SearchMovieForm clearState={clearState} getData={getData}/>
         </div>
     );
 };
