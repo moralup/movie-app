@@ -14,12 +14,10 @@ export default class FullApp extends Component{
 
     render(){
         return (
-            <div>
+            <>
                 <Header updateState={this.updateState}/>
                 <Main data={this.state.data}/>
-                {/* <img src='https://imgur.com/x0K3SKA'/> */}
-                {/* <img src='https://i.imgur.com/x0K3SKA.jpeg'/> */}
-            </div>
+            </>
         );
     }
 }
