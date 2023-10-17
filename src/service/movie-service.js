@@ -18,17 +18,25 @@ export default class MovieService {
         }
     };
     
-    getDataByKeyword = async (keyWord) => {
-        const data = await fetch(`${this._apiBase}/3/search/movie?query=${keyWord}&api_key=f567463f5d4fd0634a4c7d9d54f0f5a8`);
+    getDataByKeyword = async (keyWord, page) => {
+        const data = await fetch(`
+        ${this._apiBase}/3/search/movie?query=${keyWord}&api_key=f567463f5d4fd0634a4c7d9d54f0f5a8&page=${page}`);
         const dataJSON = await data.json();
         
         return dataJSON;
     };
     
-    getId = async (keyWord) => {
-        const dataJSON = await this.getDataByKeyword(keyWord); 
+    getId = async (keyWord, page=1) => {
+        const dataJSON = await this.getDataByKeyword(keyWord, page); 
         const result = dataJSON.results.map(item => item.id); 
         return result;
+    };
+
+    getDateTrending = async (trending) => {
+        // console.log(trending, 212112)
+        const data = await fetch(`${this._apiBase}/3/trending/movie/${trending}?api_key=f567463f5d4fd0634a4c7d9d54f0f5a8`); 
+        const dataJSON = await data.json();
+        return dataJSON;
     };
 
 }

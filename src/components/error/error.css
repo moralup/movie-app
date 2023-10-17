@@ -37,7 +37,6 @@
     left: 22px;
     transform: rotate(45deg);
     transition: all 1s ease;
-
 }
 
 .error-image::after{
@@ -57,14 +56,13 @@
 .error-image:hover.error-image::after{
     height: 15px;
     transform: translate(-5px, 12px) rotate(-35deg);
-    /* transform: rotate(-30deg) */
 }
 
 .error-image:hover.error-image::before{
    height: 25px;
    transform: translate(4px, 2px) rotate(35deg);
-    /* transform: rotate(30deg) */
 }
+
 .none{
     display: none;
 }

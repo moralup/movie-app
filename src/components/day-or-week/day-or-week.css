@@ -1,0 +1,25 @@
+.day-or-week{
+    height: 40px
+}
+.day-or-week-btn{
+    height: 40px;
+    width: 470px;
+    background-color: #f7f7f7;
+    border: 2px solid #1890FF;
+    transition: all 0.5s ease-in-out;
+}
+
+.day-or-week-btn:nth-of-type(1){
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.day-or-week-btn:nth-of-type(2){
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.day-or-week-btn-active{
+    color: #f7f7f7;
+    background-color: #1890FF;  
+}
