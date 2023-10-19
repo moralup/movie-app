@@ -25,6 +25,11 @@ export default class SearchMovieForm extends Component{
         this.setNameMovie(e);
         this.onLabelSubmitDebounce();
     };
+
+    clearMovieName = () => {
+        this.setState({ name: '' })
+    };
+    
     render(){
         return (
             <form onSubmit={this.onLabelSubmit}>

@@ -86,10 +86,16 @@ export default class FullApp extends Component{
                             page={this.state.page}
                             swch={this.state.switch}
                             found={!!this.state.data.length}/> :
-                        <Error title="NOT FOUND" descriptions="try searching with an another word"/>
+                        <Error 
+                            problem="not-found"
+                            title="NOT FOUND" 
+                            descriptions="try searching with an another word"/>
                     }
                 </Online>
-                <Offline><Error descriptions="connect to internet, please"/></Offline>
+                <Offline>
+                    <Error problem="not-internet" 
+                        descriptions="connect to internet, please"/>
+                </Offline>
             </>
         );
     }

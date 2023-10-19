@@ -1,10 +1,11 @@
 import './error.css';
 import image from '../../images/cross.svg';
 export default (props) => {
+    
     return (
-        <div className="error-box">
-            <div className="error-image"
-                onClick={(e) => e.target.parentElement.className += ' none'}>
+        <div 
+            className={`error-box ${props.problem}-box`}>
+            <div className={`error-image ${props.problem}-image`}>
                 <span/>
                 <span/>
             </div>

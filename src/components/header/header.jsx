@@ -9,7 +9,7 @@ const Header = (props) => {
         <div className="header">
             <Switch setSwitch={setSwitch}/>
             {swch === 'search' ? 
-                <SearchMovieForm 
+                <SearchMovieForm
                     clearState={clearState} 
                     getData={getData}/> : 
                 <DayOrWeek 
