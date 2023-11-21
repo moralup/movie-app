@@ -4,6 +4,7 @@
     justify-content: center;
     vertical-align: middle;
     gap: 8px;
+    margin: 20px 0;
 }
 
 .pagination-list{

@@ -27,7 +27,7 @@ export default class SearchMovieForm extends Component{
     };
 
     clearMovieName = () => {
-        this.setState({ name: '' })
+        this.setState({ name: '' });
     };
     
     render(){

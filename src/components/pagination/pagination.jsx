@@ -1,33 +1,57 @@
 import { Component } from 'react';
 import './pagination.css';
 
+
+
 export default class Pagination extends Component{
     
     state = {
         activePage: 1,
-        pages: [1, 2, 3, 4, 5],
+        pageNum: [],
     };
-
+    componentDidMount(){
+        let list = [];
+        const { totalPages } = this.props
+        if(totalPages<=5){
+            for(let i = 1; i<=totalPages; i++){
+                list.push(i)
+            }
+        } else{
+            list = [1, 2, 3]
+        } 
+        this.setState({ pageNum: list })
+    }
+    componentDidUpdate(prevProps, prevState){
+        if(+prevState.activePage !== +this.state.activePage) this.props.newPage(this.state.activePage);
+    }
     onActive = (e) => {
+        if(isNaN(e.target.id) || +e.target.id === +this.state.activePage) return
         this.setState({ activePage: e.target.id });
-        this.props.newPage(e.target.id);
+        // console.log(e.target.id, this.state.activePage, +e.target.id === this.state.activePage)
     };
 
     onPrevPages = () => {
-        if(this.state.pages[0] === 1) return;
-        const newPages = this.state.pages.map(item => --item);
-        this.setState({ pages: newPages });
+        if(this.state.pageNum[0] === 1 ) return;
+        const newPages = this.state.pageNum.map(item => --item);
+        if(+this.state.activePage === +this.state.pageNum[0]) this.setState({ pageNum: newPages })
+        else this.setState(state => ({ pageNum: newPages, activePage: newPages[2] }));
     };
     
     onNextPages = () => {
-        const newPages = this.state.pages.map(item => ++item);
-        this.setState({ pages: newPages });
+        const { totalPages } = this.props;
+        if(totalPages <= 5 || totalPages-this.state.pageNum.at(-1)===2) return;
+        const newPages = this.state.pageNum.map(item => ++item);
+        if(+this.state.activePage === +this.state.pageNum[2]) this.setState({ pageNum: newPages })
+        else this.setState(state => ({ pageNum: newPages, activePage: newPages[0] }));
     };
 
     render(){
-        this.list = this.state.pages.map(item => {
+        const { totalPages } = this.props;
+        const ell = totalPages-this.state.pageNum.at(-1)===2 ? totalPages-1 : '...'
+        const list = totalPages <= 5 ? this.state.pageNum : [...this.state.pageNum, ell, totalPages]
+        this.renderList = list.map(item => {
             return (
-                <li key={item}
+                <li key={item*Math.random()}
                     id={item}
                     className={+this.state.activePage === item ?
                         'pagination-item pagination-item-active' : 
@@ -40,7 +64,7 @@ export default class Pagination extends Component{
                 <button onClick={this.onPrevPages}
                     className="pagination-arrow pagination-arrow-left"/>
                 <ul onClick={this.onActive} className="pagination-list">
-                    {this.list}
+                    {this.renderList}
                 </ul>
                 <button onClick={this.onNextPages} 
                     className="pagination-arrow pagination-arrow-right"/>

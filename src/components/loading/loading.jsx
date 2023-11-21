@@ -1,5 +1,5 @@
 import './loading.css';
 
-export default () => {
-    return <span className="loader"></span>;
+export default (props) => {
+    return <span style={props.style}className="loader"/>;
 };

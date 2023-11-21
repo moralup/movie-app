@@ -2,64 +2,116 @@ p, div{
     margin: 0;
     padding: 0;
 }
+
 .card{
     display: flex;
     gap: 20px;
-    width: 451px;
-    height: 279px; 
+    padding: 10px;
+    width: 388px;
+    /* height: 279px;  */
+    height: 245px;
     box-shadow: 5px 10px 20px #c2c0c0;
     box-sizing: border-box;
-    transition: all 0.5s ease-in;
+    transition: all .5s ease-in;
+    background-color: #f7f7f7;
 }
 
 .card:hover{
     box-shadow: 5px 10px 20px 10px #b3b0b0;
 }
-.card-image{
-    width: 183px;
-    height: 279px;
-}
 
+.background {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+    background-color: #f7f7f7;
+    transition: opacity .6s ease
+}
 .opacity{
     opacity: 0.4;
-    transition: all 1s ease-in
+    /* transition: all 1s ease-in */
 }
 .anti-opacity{
     opacity: 1 !important;
-    transition: all 1s ease-in
+    /* transition: all 1s ease-in */
+}
+
+.close-btn{
+    display: none;
+    background: none;
+    position: absolute;
+    align-items: center;
+    top: 10px;
+    left: 10px;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 2s ease;
+    transition-delay: 2s;
+    z-index: 1;
+}
+.close-img{
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    height: 60px;
+    width: 60px;
 }
 
 .card-image-wrapper{
-    flex-shrink: 0;
-    width: 183px;
-    height: 279px;
-    background: black;
+    position: absolute;
+    z-index: 1;
+    /* flex-shrink: 0; */
+    height: 90px;
+    width: 60px;
+    /* background: black; */
+    background:#f7f7f7;
+    border-radius: 50%;
+    transition: opacity .5s ease-in;
+}
+
+.card-image{
+    width: inherit;
+    height: inherit;
+    transform-origin: top left;
+}
+
+html {
+    scroll-behavior: smooth
 }
 
 .movie-descriptions{
     display: flex;
     flex-direction: column;
-    width: 248px;
-    gap: 15px;
+    transition: opacity .5s ease-in;
+    /* width: 238px; */
+    /* gap: 15px; */
+    gap: 7px;
     flex-grow: 1;
     flex-shrink: 1;
     position: relative;
 }
 
-.container{
+.card-header{
     position: relative;
-    height: 48px;
+    /* height: 48px; */
     display: flex;
-    align-items: center;
+    align-items: top;
+    margin-left: 75px;
 }
 
-.movie-title{
+.card-title{
+    /* margin: 0; */
     margin-right: auto;
-    padding-top: 10px;
+    /* padding-top: 10px; */
     font-size: 20px;
     font-weight: 400;
-    width: 150px;
-    height: 50px;
+    /* width: 150px; */
+    /* height: 50px; */
     overflow: hidden
 }
 
@@ -82,28 +134,49 @@ p, div{
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    border: 2px #E9D100 solid;
+    border: 2px solid;
     text-align: center;
+    align-self: flex-start;
     padding-top: 7px;
     font-size: 12px;
     box-sizing: border-box;
-    margin-right: 10px
+    /* margin-right: 10px */
 }
     
 .movie-rating-stars{
+    width: 0px;
     cursor: context-menu;
     position: absolute;
-    bottom: 15px;
+    bottom: 5px;
     color:#fadb14;
     font-size: 20px;
     overflow-x: hidden;
 }
 .movie-rating-stars-background{
     color:#e0dddd;
-    width: 100% !important 
+    cursor: context-menu;
+    position: absolute;
+    bottom: 5px;
+    font-size: 20px;
+    
+    /* width: 100% !important  */
+}
+.wrapper-movie-rating{
+    position: relative;
+    height: 30px;
+    /* width: 100px; */
+    /* margin-bottom: 20px; */
+    margin-left: auto;
+    width: 210px
 }
 
-.movie-production-date{
+.selected-rating{
+    position: absolute;
+    bottom: 50px;
+    display: none;
+}
+.card-date{
+    margin-left: 75px;
     color: #827E7E;
     margin-top: -7px;
 }
@@ -111,8 +184,10 @@ p, div{
 .genres{
     display: flex;
     gap: 8px;
-    margin: 0;
-    flex-wrap:wrap
+    flex-wrap:wrap;
+    height: 23px;
+    margin-left: 75px;
+    margin-bottom: 15px
 }
 
 .genre{
@@ -133,6 +208,7 @@ p, div{
 .movie-main-content{
     line-height: 22px;    
     height: 90px;
+    /* height: 92px; */
     overflow: hidden;
     transition: all 0.2s ease-in;
     margin-bottom: auto

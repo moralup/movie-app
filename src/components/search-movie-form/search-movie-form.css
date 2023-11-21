@@ -1,6 +1,7 @@
 .search-form{
     display: block;
-    width: 1010px;
+    /* width: 1010px; */
+    width: 90vw;
     height: 40px;
     font-size: 16px;    
     line-height: 22px;    

@@ -1,0 +1,47 @@
+.trend{
+    position: relative;
+}
+
+.trend-btn{
+    height: 40px;
+    /* width: 470px; */
+    width: 45vw;
+    background-color: #f7f7f7;
+    border: 2px solid #1890FF;
+    transition: all 0.5s ease-in-out;
+}
+
+.trend-btn:nth-of-type(1){
+    border-right-width: 0;
+    border-radius: 5px 0 0 5px;
+}
+
+.trend-btn:nth-of-type(2){
+    border-left-width: 0;
+    border-radius: 0 5px 5px 0px;
+}
+
+.trend-btn-active{
+    color: #f7f7f7;
+    background-color: #1890FF;  
+}
+
+.trend-stick{
+    position: absolute;
+    text-align: center;
+    line-height: 40px;
+    font-size: 14px;
+    font-family: Arial;
+    text-transform: capitalize;
+    color: #f7f7f7;
+    top: 0px;
+    /* width: 480px; */
+    width: 55vw;
+    height: 40px;
+    background-color: #1890FF;  
+    border-radius: 20px 50px 50px 20px;
+    transition-duration: 1s, .3s;
+    transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28), ease-in-out;
+    transition-delay: 0s, 0s;
+    transition-property: transform, border-radius;
+}

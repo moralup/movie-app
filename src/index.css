@@ -3,14 +3,58 @@
 body{
     font-family: 'Inter';
     font-size: 12px;
-    width: 1010px;
     margin: 0 auto;
     background-color: #f7f7f7;
-}
-li{
-    list-style: none
-}
-ul{
-    padding: 0;
+    transition: background .6s ease-in;
+    background-blend-mode: multiply;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
+body::-webkit-scrollbar {
+    width: 0px;
+    padding: 0;
+    margin: 0;
+}
+
+li{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+ul,h1,h2,h3,h4,h5{
+    padding: 0;
+    margin: 0;
+}
+
+@media (min-width:768px) {
+    .card {
+        width: 351px;
+
+    }
+    .card-image-wrapper{
+        width: 30px;
+        height: 30px;
+        content: 'hello'
+        /* display: none; */
+    }
+
+    .card-image{
+        display: none;
+        width: 30px;
+        height: 30px
+
+    }
+}
+
+  
+@media (min-width:1010px) {
+    .card{
+        width: 451px;
+        background-color: red;
+    }
+    .trend{
+        /* width: 100px; */
+    }
+}
