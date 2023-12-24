@@ -1,8 +1,13 @@
-.search-form{
-    display: block;
-    /* width: 1010px; */
-    width: 90vw;
+.header__search-form{
+    width: 100%;
     height: 40px;
+    box-sizing: border-box;
+}
+
+.header__search-field{
+    display: block;
+    width: inherit;
+    height: inherit;
     font-size: 16px;    
     line-height: 22px;    
     border: 1px #D9D9D9 solid;
@@ -11,19 +16,8 @@
     box-sizing: border-box;
 }
 
-.search-form:hover {
+.header__search-field:hover {
     border: 2px #1890FF solid;
     padding-top: 0;
     padding-left: 11px;
 }   
-
-.search-placeholder{
-    font-size: 16px;
-    line-height: 22px;
-    transform: translate(12px, 31px);
-}
-
-.search-form:hover .search-placeholder{
-    transform: translate(7px, 15px);
-    display: none;
-}

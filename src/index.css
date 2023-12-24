@@ -1,5 +1,9 @@
 @import url('./fonts.css');
 
+html {
+    scroll-behavior: smooth
+}
+
 body{
     font-family: 'Inter';
     font-size: 12px;
@@ -10,6 +14,7 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
+    transition: all 1s ease;
 }
 
 body::-webkit-scrollbar {
@@ -28,33 +33,110 @@ ul,h1,h2,h3,h4,h5{
     margin: 0;
 }
 
-@media (min-width:768px) {
-    .card {
-        width: 351px;
+#root{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100vw;
+    height: 100vh;
+}
+.app{
+    height: 100vh;
+    width: 100vw;
+    /* display: flex; */
+    /* flex-direction: column; */
+}
 
+@media (min-width:350px){
+    .app{
+        width: 90vw;
     }
-    .card-image-wrapper{
-        width: 30px;
-        height: 30px;
-        content: 'hello'
-        /* display: none; */
+} 
+
+@media (min-width:500px){
+    .card{
+        height: 281px; 
     }
 
-    .card-image{
-        display: none;
-        width: 30px;
-        height: 30px
+    .card__image-wrap{
+        position: static;
+        height: 261px;
+        width: 183px;
+    }
+    
+    .card__genres, .card__date, .card__header{
+        margin-left: 0;
+    }
+    
+    .card__descriptions{
+        height: 160px;
+    }
 
+    .card__rating-wrap, .card__rating_error, .loading-snake{
+        margin-left: 0;
     }
 }
 
-  
-@media (min-width:1010px) {
+/* @media (min-width:768px) { */
+@media (min-width:700px) {
+    
+    .movie-list{
+        grid-template-columns: 1fr 1fr;   
+    }
+
     .card{
-        width: 451px;
-        background-color: red;
+        height: 245px;
     }
-    .trend{
-        /* width: 100px; */
+
+    .card__image-wrap{
+        position: absolute;
+        height: 90px;
+        width: 60px;
+    }    
+    
+    .card__genres, .card__date, .card__header{
+        margin-left: 75px;
     }
+    
+    .card__descriptions{
+        height: 90px;
+    }
+}
+
+@media (min-width:1024px) {
+    .app{
+        width: 1010px
+    }
+    
+    .movie-list{
+        gap: 35px;
+        padding: 0 35px;
+    }
+
+    .card{
+        width: 454px;
+        height: 281px; 
+    }
+
+    .card__image-wrap{
+        position: relative;
+        background: black;
+        height: 261px;
+        width: 183px;
+    }
+    .card__image-title{
+        display: block;
+    }
+    .header{
+        box-sizing: border-box;
+        padding: 0 35px;
+    }
+    .card__genres, .card__date, .card__header{
+        margin-left: 0;
+    }
+
+    .card__descriptions{
+        /* height: 160px; */
+    }
+    
 }

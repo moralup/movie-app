@@ -1,20 +1,38 @@
 import MovieList from '../movie-list/movie-list';
 import Pagination from '../pagination';
+import LoadingCircle from '../loading-circle';
+import './main.css';
 
 const Main = (props) => {
-    const { data, loading, swch, found, ratedMovie, setStateFullApp, totalPages, newPage } = props;
-    // alert(props.newPage)
+    const { movies, loading, tab, ratedMovie,
+        setMovieRating, totalPages, movieTitle, getMovies } = props;
+        const mainContent = () => {
+        switch(true){
+        case loading:
+            // console.log('loading')
+            return <LoadingCircle/>;
+        case !movies.length&&tab==='rated':
+            // console.log('rated')
+            return <h1>you haven't rated a single movie</h1>;
+        case !movies.length&&!!movieTitle&&tab==='search':
+            // console.log('not found')
+            return <h1>{`not found for "${movieTitle}"`}</h1>;
+        default: 
+            return (
+                <MovieList 
+                    movies={movies}
+                    ratedMovie={ratedMovie}
+                    setMovieRating={setMovieRating}/>
+            );
+        }           
+    };
     return (
         <div className="main">
-            <MovieList 
-                data={data}
-                loading={loading}
-                swch={swch}
-                ratedMovie={ratedMovie}
-                setStateFullApp={setStateFullApp}
-            />
-            {(swch === 'search' && found ) ? 
-                <Pagination newPage={newPage}
+            {mainContent()}
+            {(tab === 'search' && movies.length) ? 
+                <Pagination 
+                    getMovies={getMovies}
+                    movieTitle={movieTitle}
                     totalPages={totalPages}/> : 
                 null}
         </div>

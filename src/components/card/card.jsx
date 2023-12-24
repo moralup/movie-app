@@ -1,80 +1,78 @@
-import { Component } from 'react';
+import { Component, createRef, useCallback } from 'react';
+import { debounce, throttle } from 'lodash';
 import { format } from 'date-fns';
 import { GenresConsumer } from '../../genres-context/genres-context';
-import { LoadingStar } from '../loading-star/loading-star';
-import movieService from '../../service/movie-service';
+import LoadingSnake from '../loading-snake';
 import './card.css';
-import Image from '../../images/crying-anime-girl.jpg';
-import xzImage from '../../images/cross.svg'
+import ImageCryingGirl from '../../images/crying-anime-girl.jpg';
+import ImageBkColor from '../../images/bk-color.jpg'
+import Close from '../../images/cross.svg'
 
 class RatingStars extends Component{
     state = {
-        width: '0px',
-        rating: 0,
+        rating: this.props.rating,
         loading: false,
-    }
-
-    wrap = null;
-    
-    componentDidMount(){
-        if(!isNaN(this.props.rating)) this.setState({ rating: this.props.rating })
-        // console.log('state rating: ',this.state.rating, 'props rating: ', this.props.rating);
-        // this.wrap[1].style.width = `${this.state.rating*21}px`
-    }
-    getMovieRating = (event) => {
+        error: false,
+    };
+    ratWrap = createRef();
+    getRatPos = (event) => {
         const rect = event.target.getBoundingClientRect();
         const x = event.clientX - rect.left; //x position within the element.
-        const rnr = Math.round((x/20.8) * 2) * 0.5 // rounding the rating number to 0.5        
-        return rnr;
-    }
-
-    setRatingMovie = async (event) =>{
-        const rating = this.getMovieRating(event)
-        this.setState({ loading: true, rating })
-        movieService.setMovieRate(this.props.id, this.getMovieRating(event)).then(() => this.setState({ loading: false }));
-        this.props.setStateFullApp(this.props.id, rating)
-    }
-
-    voteMovie = (event) => {
-        const rect = event.target.getBoundingClientRect();
-        const x = event.clientX - rect.left; // x position within the element.
-        const rnr = this.getMovieRating(event)        
-        console.log(rnr, x);
-        this.wrap = event.currentTarget.children;
-        this.wrap[1].style.width = `${rnr*21}px`
-        this.wrap[2].textContent = rnr // rounding the rating number to 0.5
-        this.wrap[2].style.left = `${x-15}px`;
-        this.wrap[2].style.display = 'block';
-        this.wrap[2].style.borderColor = this.props.defineColor(rnr);
+        const rnr = Math.round((x/20.8) * 2) * 0.5; // rounding the rating number to 0.5        
+        return [rnr, x];
     };
+
+    setMovieRating = async (event) =>{
+        if(this.state.error) return;
+        const rating = this.getRatPos(event)[0];
+        this.setState({ loading: true, rating });
+        this.props.setMovieRating(this.props.id, rating)
+            .then(res => {
+                if(res.status_code===1 || res.status_code===12) this.setState({ loading: false });
+                else this.setState({ loading: false, error: true, rating: 10 });
+            });
+    };
+
+    voteMovie = throttle((event) => {
+        if(this.state.error) return;
+        const [rnr, x] = this.getRatPos(event);
+        const [, stars, circle] = this.ratWrap.current.children;
+        stars.style.width = `${rnr*21}px`;
+        circle.style.opacity = 1;
+        circle.textContent = rnr;
+        circle.style.borderColor = this.props.defineColor(rnr);
+        circle.style.transform = `translate(${x-15}px)`;
+    }, 50, { trailing: false });
     
-    sebalsa = () => {
-        if(!this.wrap) return;
-        this.wrap[2].style.display = 'none';
-        this.wrap[1].style.width = this.state.rating ? `${this.state.rating*21}px` : '0px'
-        // alert(this.state.rating)
+    stopVoteMovie = () => {
+        if(this.state.error) return;
+        const [, stars, circle] = this.ratWrap.current.children;
+        circle.style.opacity = 0;
+        stars.style.width = `${this.state.rating*21}px`;        
     };
     render(){
         return (
             <>
-
                 {this.state.loading ? 
-                    <LoadingStar /> :
-                    <div 
-                        className="wrapper-movie-rating" 
+                    <LoadingSnake/> :
+                    <div
+                        ref={this.ratWrap}
+                        className="card__rating-wrap" 
                         onMouseMove={this.voteMovie}
-                        onMouseLeave={this.sebalsa}
-                        onClick={this.setRatingMovie}>
+                        onMouseLeave={this.stopVoteMovie}
+                        onClick={this.setMovieRating}>
                         <div 
-                            className="movie-rating-stars-background">
+                            className="card__rating-background">
                             ★★★★★★★★★★
                         </div>
                         <div 
-                            style={{ width: `${this.state.rating * 21}px` }}
-                            className="movie-rating-stars">
+                            className="card__rating"
+                            style={{ width: `${this.state.rating * 21}px`,
+                                color: this.state.error ? 'red' : '#fadb14' }}>
                                     ★★★★★★★★★★
                         </div>
-                        <div className="movie-rating-circle selected-rating"></div>
+                        <div className="card__rating-circle
+                            card__rating-circle_select"/>
                     </div>} 
             </>
         );
@@ -83,55 +81,22 @@ class RatingStars extends Component{
 }
 
 export default class Card extends Component{
-    
     state = {
         prov: false,
-        opacity: true,
     };
-
-    
-    componentWillUnmount(){
-        document.body.style.backgroundImage = null;
-    }
-    
+    cardRef = createRef();
+    cardImageRef = createRef();
     componentDidMount(){
-        const check = this.props.setObserve(this.props.id);
-        // if(check) console.log(this.props.title)
-    }
-    
-    shouldComponentUpdate(nextProps){
-        if(nextProps.opacity) return true
-        return false
+        this.props.setObserve(this.props.id);
+    };
+    shouldComponentUpdate(nextProps, nextState){                   
+        // return nextProps.visible&&(this.props.event!==nextProps.event||(this.props.visible!==nextProps.visible&&((this.cardRef.current.style.opacity&&!nextProps.event)||(nextProps.event&&!this.cardRef.current.style.opacity)))||this.props.active!==nextProps.active)
+    return nextState.prov!==this.state.prov||(nextProps.visible&&(this.props.event!==nextProps.event||(this.props.visible!==nextProps.visible&&((this.cardRef.current.style.opacity&&!nextProps.event)||(nextProps.event&&!this.cardRef.current.style.opacity&&!nextProps.active)))||this.props.active!==nextProps.active))
+    };
+    componentDidUpdate(){
+        console.log('update card')
     }
 
-    componentDidUpdate(prevProps, prevState){
-        // console.log(document.getElementById(this.props.id))
-        // if(this.props.active) alert(this.props.title)
-        // const check = this.props.setObserve(this.props.id);        
-        // if(this.props.active){
-            // if(!this.state.opacity) this.setState({ opacity: true })
-            // const url = `https://image.tmdb.org/t/p/original${this.props.backgroundPath}`;
-            // document.body.style.backgroundImage = `url(${url})`;    
-            // console.log(this.props.title, 'active')
-        // }
-        // else {
-            // console.log(this.props.title, 'no active')
-            // if(this.state.opacity !== prevState.opacity || prevProps.active) return
-            // this.setState(state => ({ opacity: !state.opacity }))
-        // }
-    }
-    check;
-    onLabelMouseover = () => {
-        if(this.props.title.length < 20) return;
-        this.setState({ prov: true });
-    };
-
-    onLabelMouseout = () => {
-        if(this.props.title.length < 20) return;
-        this.setState({ prov: false });
-        
-    };
-    
     defineColor = (num) => {
         let color;
         switch(true){
@@ -148,203 +113,151 @@ export default class Card extends Component{
             color = '#E90000';
             break;
         default: 
-            color = '#E90000';
+            color = '#f7f7f7';
             break;
         }
         return color;
     };
-    
+
     getGenresList = (genresID, genresName) => {
         try {
-            return genresID.map(id => {
-                const genre = genresName.genres.find(objGen => id === objGen.id)
+            return genresID.map((id, i) => {
+                const genre = genresName.genres.find(objGen => id === objGen.id)                
                 return <li
                     key={`g${id}`}
-                    className="genre">
+                    className="card__genre">
                     {genre.name}
                 </li>;
             })
         } catch(err){
-            // console.log(genresID, genresName)
-            return null
+            return null;
         }
     };
-
-
-    fullImage = (event) => {
-        const rect = event.target.getBoundingClientRect();        
-        this.coordinates =  window.scrollY
-        const card = event.target.closest('.card');
-        const [image, description] = card.children        
-        
-
+    
+    onFullTitle = () => {
+        if(this.props.title.length < 20 || window.innerWidth < 1024) return;
+        this.cardImageRef.current.classList.add('opacity');
+    };
+    offFullTitle = () => {
+        if(this.props.title.length < 20 || window.innerWidth < 1024) return;
+        this.cardImageRef.current.classList.remove('opacity');
+    };
+    
+    onFullImage = async (event) => {
+        if(window.innerWidth >= 500) return;
+        this.coordinates = window.scrollY;
+        const hgt = window.innerHeight;
+        const card = this.cardRef.current;
+        const [imageWrap, description] = card.children;       
+        const [close, image] = imageWrap.children;
+        description.style.opacity = 0;
+        imageWrap.style.opacity = 0;
+        card.style.height = hgt >= 500 ? '500px' : '90vh'
         window.scrollTo({
             top: window.scrollY+card.getBoundingClientRect().y-20,
             behavior: 'smooth',
         });
-
-
-
-        description.style.opacity = 0;
-        image.style.opacity = 0;
-  
-        // card.style.transform = 'scaleY(2)'
-        // const screenW = window.screen.availWidth;
-        // const screenH = window.screen.availHeight;
-        card.style.height = window.screen.availHeight >= 600 ? '600px' : '90vh'
-         
-        // card.style.transform = `scaleY(${x})`
-        // image.style.backgroundColor = '#f7f7f7'
-        // image.classList.add('full-image')
         setTimeout(() => {
-            image.children[0].style.display = 'block'
-            image.style.height = window.screen.availHeight >= 600 ? '580px' : '85vh'
-            image.style.width = '365px'                
-            image.style.opacity = 1
-            image.children[0].style.opacity = 1
-
-            const list = [...card.closest('.movie-list').children]; 
-            if(list[list.length-1] === card || list[list.length-2] === card){
-                console.log('last')
-                window.scrollTo({
-                    top: window.scrollY+card.getBoundingClientRect().y-20,
-                    behavior: 'smooth',
-                });    
-            }
-        }, 1000)
-        // image.children[0].style.height = '85vh'
-        // image.children[0].style.width = '95vw'
-
-
-
-
-
-
-        // event.target.parentElement.style.width = '368px'
-        // event.target.parentElement.style.height = '225px'
-        // event.target.parentElement.style.transformOrigin = 'center left'        
-        // event.target.parentElement.style.transform = 'scale(6, 6)'
-        // document.body.style.backgroundImage = `url(${event.target.src})`
-        // document.querySelector('.background').style.opacity = 0
-        // event.target.parentElement.style.width = '80vw'
-        // event.target.parentElement.style.height = '80vh'
-        // this.onMouseOver(event.target.src)
-    }
-
-
-    minImage = (event) => {
-        
-        console.log(window.scrollY)
-        event.stopPropagation()
+            const imgHgt = hgt >= 500 ? 480 : hgt*0.9-20;
+            const imgScale = imgHgt/90;
+            imageWrap.style.opacity = 1;
+            image.style.transform = `scale(${imgScale})`;
+            close.style.display = 'block';
+            window.scrollTo({
+                top: window.scrollY+card.getBoundingClientRect().y-20,
+                behavior: 'smooth',
+            });    
+        }, 900);
+    };
+    offFullImage = (event) => {
+        event.stopPropagation();
+        if(window.innerWidth >= 500) return;
         const card = event.target.closest('.card');
-        const [image, description] = card.children
+        const [imageWrap, description] = card.children;
+        const [close, image] = imageWrap.children;
+        imageWrap.style.opacity = 0;
         description.style.opacity = 0;
-        image.style.opacity = 0;
         setTimeout(() => {
-            image.children[0].style.display = 'none'
-            image.style.height = '90px';
-            image.style.width = '60px';
-            card.style.height = '245px'
-        }, 500)
-
+            card.style.height = '245px';
+            close.style.display = 'none';
+            image.style.transform = 'scale(1)';
+        }, 500);
         setTimeout(() => {
+            imageWrap.style.opacity = 1;    
             description.style.opacity = 1;
-            image.style.opacity = 1;    
-            console.log(this.coordinates)
-            if(this.coordinates) window.scrollTo({ top: this.coordinates, behavior: 'smooth' })
-        }, 1000)
-    }
-
-    onMouseOver = (urlka) => {
-        return
-        this.props.stateList({ activeMovie: this.props.id, event: true })
-        const url = `https://image.tmdb.org/t/p/original${this.props.backgroundPath}`;
-        if(urlka) document.body.style.backgroundImage = `url(${urlka})`
-        else document.body.style.backgroundImage = this.props.backgroundPath ? `url(${url})` : null;
-        const background = document.querySelector('.background');
-        background.style.opacity = 0
+            if(this.coordinates) window.scrollTo({ top: this.coordinates, behavior: 'smooth' });
+        }, 1500);
     };
 
-    onMouseLeave = () => {
-        return
-        this.props.stateList({ activeMovie: null, event: false })
-        const background = document.querySelector('.background');
-        background.style.opacity = '1'
-        // if(!this.props.active) return         
-        // alert(`leave ${this.props.title} ${this.state.opacity} ${this.props.active}`)
-        // this.props.stateList({ activeMovie: null, event: false })
-        // this.setState({ opacity: true })
-        // document.body.style.backgroundImage = '';
-        // this.setState({ active: true })
-    }
+    onBackImg = ((event) => {         
+        if(window.innerWidth < 1024 || this.props.active) return;
+        // this.cardRef.current.style.transform = 'scale(1.02)';
+        this.props.stateList({ activeMovie: this.props.id, event: true });
 
+        this.props.onBackImg(this.props.backgroundPath, this.props.id);
+    });
+    offBackImg = (event) => {
+        if(window.innerWidth < 1024) return;
+        this.cardRef.current.style.transform = 'scale(1)';
+        this.props.offBackImg(this.props.id);
+    };
     render(){
-        const { voteAverage, title, overview, img, id, date, rating, swch, genreIds } = this.props;
-        // let genresRender;
-        let miniTitle = title;
-        if(miniTitle.split('').length >= 20){
-            miniTitle = miniTitle.split('');
-            miniTitle.length = 20;
-            miniTitle = miniTitle.join('');
-            miniTitle += '...';
-        }
-        const style = (this.props.opacity && !this.props.active && this.props.event) 
-            ? { opacity: 0.1 } : {} 
-            return (
+        const { voteAverage, title, overview, img, id, date, rating, genreIds } = this.props;
+        const style = !this.props.event ? null : this.props.active ?  
+            { transform: 'scale(1.02)' } : { opacity: 0.2, transform: 'scale(0.98) ' };
+
+        return (
             <div id={id}
                 style={style}
+                ref={this.cardRef}
                 className="card"
-                onMouseOver={this.onMouseOver}
-                onMouseLeave={this.onMouseLeave}>
-                
+                onMouseOver={this.onBackImg}
+                onMouseLeave={this.offBackImg}>
                 <div 
-                    className="card-image-wrapper"
-                    onClick={this.fullImage}>
+                    className="card__image-wrap"
+                    onClick={this.onFullImage}>
                     <button 
-                        onClick={this.minImage}
-                        className="close-btn">
-                        <img id="close-img" className="close-img" src={xzImage} alt="close"/>
+                        onClick={this.offFullImage}
+                        className="card__close-btn">
+                        <img src={Close} alt="close"/>
                     </button>
                     <img 
-                        src={img ? `https://image.tmdb.org/t/p/original${img}` : Image}
-                        className={this.state.prov ? 'card-image opacity' : 'card-image anti-opacity'}
+                        ref={this.cardImageRef}
+                        src={img ? `https://image.tmdb.org/t/p/original${img}` : ImageCryingGirl}
                         alt="to movie"
                     />
+                    <h3 className="card__image-title">
+                        {title.toLowerCase()}
+                    </h3>
                 </div>
-                <div className="movie-descriptions">
-                    <div className="card-header">
-                    
-                        <h3 className={this.state.prov ? 
-                            'movie-full-title anti-opacity' : 
-                            'movie-full-title'}>
-                            {title.toLowerCase()}
-                        </h3>
-                        <h3 onMouseOver={this.onLabelMouseover}
-                            onMouseOut={this.onLabelMouseout}
-                            className="card-title">{miniTitle}
+                <div className="card__info">
+                    <div className="card__header">
+                        <h3 onMouseOver={this.onFullTitle}
+                            onMouseOut={this.offFullTitle}
+                            className="card__title">{title}
                         </h3>
                         <div 
                             style={{ borderColor: this.defineColor(+voteAverage) }}
-                            className="movie-rating-circle">
+                            className="card__rating-circle">
                             {voteAverage ? (+voteAverage).toFixed(1) : '?'}
                         </div>
                     </div>
-                    <time className="card-date">
+                    <time className="card__date">
                         {date ? format(new Date(date), 'LLLL dd, yyyy') :
                             'no date'}
                     </time>
-                    <ul className="genres">
+                    <ul className="card__genres">
                         <GenresConsumer>{ (objG) => this.getGenresList( genreIds, objG) }</GenresConsumer>
                     </ul>
                     <p 
-                        className="movie-main-content">
+                        className="card__descriptions">
                         {overview ? overview : 'No description found'}
                     </p>
                     <RatingStars 
                         defineColor={this.defineColor}
                         id={id}
                         rating={rating}
-                        setStateFullApp={this.props.setStateFullApp}
+                        setMovieRating={this.props.setMovieRating}
                     />
                 </div>    
             </div>

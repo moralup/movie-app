@@ -1,33 +1,30 @@
 /* eslint-disable default-case */
-import Switch from '../switch';
+import TabSwitch from '../tab-switch';
 import TrendSwitch from '../trend-switch';
 import SearchMovieForm from '../search-movie-form';
 import './header.css';
 
-const Header = (props) => {
-    const { getData, clearState, setSwitch, swch, setDayOrWeek } = props;
-    let result;
-    switch(swch){
+export default (props) => {
+    const { getMovies, tab, loading } = props;
+    let result = null;
+    switch(tab){
     case 'search':
         result = <SearchMovieForm
-            clearState={clearState} 
-            getData={getData}/>;
+            tab={tab}
+            getMovies={getMovies}/>;
         break;
     case 'trending':
         result = <TrendSwitch 
-            setDayOrWeek={setDayOrWeek}/>
-        break;
-    case 'rated':
-        result = null;
+            getMovies={getMovies}/>;
         break;
     } 
     
     return (
         <div className="header">
-            <Switch setSwitch={setSwitch}/>
+            <TabSwitch 
+                loading={loading}
+                getMovies={props.getMovies}/>
             { result }
         </div>
     );
 };
-
-export default Header;
