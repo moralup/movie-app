@@ -25,6 +25,12 @@ class RatingStars extends Component{
     setMovieRating = async (event) =>{
         if(this.state.error) return;
         const rating = this.getRatPos(event)[0];
+        if(this.props.notRated){
+            this.props.stateCard({ funnyTitle: 'rated', funnyDescriptions: 'you havent rated any movie except this one' })
+            this.stopVoteMovie();
+            this.setState({ error: true, rating });   
+            return;         
+        }
         this.setState({ loading: true, rating });
         this.props.setMovieRating(this.props.id, rating)
             .then(res => {
@@ -87,7 +93,7 @@ export default class Card extends Component{
     cardRef = createRef();
     cardImageRef = createRef();
     componentDidMount(){
-        this.props.setObserve(this.props.id);
+        if(this.props.setObserve) this.props.setObserve(this.props.id);
     };
     shouldComponentUpdate(nextProps, nextState){                   
         // return nextProps.visible&&(this.props.event!==nextProps.event||(this.props.visible!==nextProps.visible&&((this.cardRef.current.style.opacity&&!nextProps.event)||(nextProps.event&&!this.cardRef.current.style.opacity)))||this.props.active!==nextProps.active)
@@ -136,33 +142,33 @@ export default class Card extends Component{
     
     onFullTitle = () => {
         if(this.props.title.length < 20 || window.innerWidth < 1024) return;
-        this.cardImageRef.current.classList.add('opacity');
+        this.cardImageRef.current.classList.add('opacity02');
     };
     offFullTitle = () => {
         if(this.props.title.length < 20 || window.innerWidth < 1024) return;
-        this.cardImageRef.current.classList.remove('opacity');
+        this.cardImageRef.current.classList.remove('opacity02');
     };
     
-    onFullImage = async (event) => {
+    onFullImage = async () => {
         if(window.innerWidth >= 500) return;
         this.coordinates = window.scrollY;
-        const hgt = window.innerHeight;
+        const wdt = window.innerWidth;
+        const cardWidth = wdt<350 ? wdt : 0.9*wdt;
         const card = this.cardRef.current;
         const [imageWrap, description] = card.children;       
-        const [close, image] = imageWrap.children;
-        description.style.opacity = 0;
-        imageWrap.style.opacity = 0;
-        card.style.height = hgt >= 500 ? '500px' : '90vh'
+        const [closeImgBtn, image] = imageWrap.children;
+        description.style.opacity = imageWrap.style.opacity = 0 
+        card.style.height = `${cardWidth*1.5}px`;
         window.scrollTo({
             top: window.scrollY+card.getBoundingClientRect().y-20,
             behavior: 'smooth',
         });
         setTimeout(() => {
-            const imgHgt = hgt >= 500 ? 480 : hgt*0.9-20;
-            const imgScale = imgHgt/90;
+            const height = cardWidth*1.5-20;
+            const width = cardWidth-20;
             imageWrap.style.opacity = 1;
-            image.style.transform = `scale(${imgScale})`;
-            close.style.display = 'block';
+            image.style.transform = `scale(${width/60}, ${height/90})`;
+            closeImgBtn.style.display = 'block';
             window.scrollTo({
                 top: window.scrollY+card.getBoundingClientRect().y-20,
                 behavior: 'smooth',
@@ -176,33 +182,28 @@ export default class Card extends Component{
         const [imageWrap, description] = card.children;
         const [close, image] = imageWrap.children;
         imageWrap.style.opacity = 0;
-        description.style.opacity = 0;
+        close.style.display = 'none';
         setTimeout(() => {
             card.style.height = '245px';
-            close.style.display = 'none';
             image.style.transform = 'scale(1)';
         }, 500);
         setTimeout(() => {
-            imageWrap.style.opacity = 1;    
-            description.style.opacity = 1;
+            description.style.opacity = imageWrap.style.opacity = 1 
             if(this.coordinates) window.scrollTo({ top: this.coordinates, behavior: 'smooth' });
-        }, 1500);
+        }, 1200);
     };
 
     onBackImg = ((event) => {         
         if(window.innerWidth < 1024 || this.props.active) return;
-        // this.cardRef.current.style.transform = 'scale(1.02)';
         this.props.stateList({ activeMovie: this.props.id, event: true });
-
         this.props.onBackImg(this.props.backgroundPath, this.props.id);
     });
     offBackImg = (event) => {
         if(window.innerWidth < 1024) return;
-        this.cardRef.current.style.transform = 'scale(1)';
         this.props.offBackImg(this.props.id);
     };
     render(){
-        const { voteAverage, title, overview, img, id, date, rating, genreIds } = this.props;
+        const { voteAverage, title, overview, img, id, date, rating, genreIds, notRated } = this.props;
         const style = !this.props.event ? null : this.props.active ?  
             { transform: 'scale(1.02)' } : { opacity: 0.2, transform: 'scale(0.98) ' };
 
@@ -234,7 +235,7 @@ export default class Card extends Component{
                     <div className="card__header">
                         <h3 onMouseOver={this.onFullTitle}
                             onMouseOut={this.offFullTitle}
-                            className="card__title">{title}
+                            className="card__title">{this.state.funnyTitle || title}
                         </h3>
                         <div 
                             style={{ borderColor: this.defineColor(+voteAverage) }}
@@ -251,13 +252,15 @@ export default class Card extends Component{
                     </ul>
                     <p 
                         className="card__descriptions">
-                        {overview ? overview : 'No description found'}
+                        {this.state.funnyDescriptions || overview || 'No description found'}
                     </p>
                     <RatingStars 
                         defineColor={this.defineColor}
                         id={id}
                         rating={rating}
                         setMovieRating={this.props.setMovieRating}
+                        stateCard={(obj) => this.setState(obj)}
+                        notRated={notRated}
                     />
                 </div>    
             </div>

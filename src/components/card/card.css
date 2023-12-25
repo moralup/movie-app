@@ -70,7 +70,8 @@ p, div{
     color: #e1e1e1;
     z-index: -1;
     font-family: 'Star';
-    transition: all 1s ease-in
+    transition: all 1s ease-in;
+    word-break: break-all;
 }
 
 .card__info{
@@ -97,7 +98,8 @@ p, div{
     height: 25px;
     font-size: 20px;
     font-weight: 400;
-    overflow: hidden
+    overflow: hidden;
+    word-break:break-all
 }
 
 .card__rating-circle{
@@ -183,8 +185,7 @@ p, div{
 
 .card__genre:hover{
     cursor: pointer;
-    background-color: #1890FF10;
-    box-shadow: 1px 1px 5px 1px #4d62a750;  
+    background-color: #e0dddd;
 }
 
 .card__descriptions{
@@ -223,6 +224,6 @@ p, div{
 
 }
 
-.opacity{
+.opacity02{
     opacity: 0.2;
 }
