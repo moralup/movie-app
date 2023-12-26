@@ -4,12 +4,19 @@ html {
     scroll-behavior: smooth
 }
 
+#root{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100vw;
+    height: 100vh;
+}
+
 body{
     font-family: 'Inter';
     font-size: 12px;
     margin: 0 auto;
     background-color: #f7f7f7;
-    transition: background .6s ease-in;
     background-blend-mode: multiply;
     background-repeat: no-repeat;
     background-size: cover;
@@ -28,27 +35,14 @@ li{
     padding: 0;
     margin: 0;
 }
-ul,h1,h2,h3,h4,h5{
+ul,h1,h2,h3,h4,h5,p,div{
     padding: 0;
     margin: 0;
 }
-
-#root{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 100vw;
-    height: 100vh;
-}
-
 
 button{
     background-color: inherit;
     border: none
-}
-p, div{
-    margin: 0;
-    padding: 0;
 }
 
 .background-image{
@@ -81,47 +75,37 @@ p, div{
     .card{
         height: 281px; 
     }
-
     .card__image-wrap{
         position: static;
         height: 261px;
         width: 183px;
     }
-    
     .card__genres, .card__date, .card__header{
         margin-left: 0;
     }
-    
     .card__descriptions{
         height: 160px;
     }
-
     .card__rating-wrap, .card__rating_error, .loading-snake{
         margin-left: 0;
     }
 }
 
-/* @media (min-width:768px) { */
 @media (min-width:700px) {
-    
     .movie-list{
         grid-template-columns: 1fr 1fr;   
     }
-
     .card{
         height: 245px;
     }
-
     .card__image-wrap{
         position: absolute;
         height: 90px;
         width: 60px;
     }    
-    
     .card__genres, .card__date, .card__header{
         margin-left: 75px;
     }
-    
     .card__descriptions{
         height: 90px;
     }
@@ -131,17 +115,18 @@ p, div{
     .app{
         width: 1010px
     }
-    
+    .header{
+        box-sizing: border-box;
+        padding: 0 35px;
+    }
     .movie-list{
         gap: 35px;
         padding: 0 35px;
     }
-
     .card{
         width: 454px;
         height: 281px; 
     }
-
     .card__image-wrap{
         position: relative;
         background: black;
@@ -151,16 +136,7 @@ p, div{
     .card__image-title{
         display: block;
     }
-    .header{
-        box-sizing: border-box;
-        padding: 0 35px;
-    }
     .card__genres, .card__date, .card__header{
         margin-left: 0;
     }
-
-    .card__descriptions{
-        /* height: 160px; */
-    }
-    
 }
