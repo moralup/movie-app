@@ -49,8 +49,8 @@ class MovieService {
         return this.ask(url);
     };
 
-    getTrendingMovie = async (trending) => {
-        const url = this.fullURL(`trending/movie/${trending}`, '&language=ru');
+    getTrendingMovie = async (period) => {
+        const url = this.fullURL(`trending/movie/${period}`, '&language=ru');
         return (await this.ask(url)).results; 
     };
 

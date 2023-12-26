@@ -1,20 +1,18 @@
 .movie-list{
     display: grid;
     gap: 20px;
-    /* padding: 36px 0; */
-    /* padding: 136px 0; */
 }
 
 .scroll-up{
     position: fixed;
-    z-index: 1;
+    bottom: 170px;
+    right: 70px;
     width: 50px;
     height: 50px;
     border-radius: 50%;
     background-color: #188fff85;
-    bottom: 170px;
-    right: 70px;
-    transition: opacity 1s ease
+    transition: opacity 1s ease;
+    z-index: 1;
 }
 
 .scroll-up::after, .scroll-up::before{
@@ -38,6 +36,3 @@
     transform: rotate(140deg);
 }
 
-.opacity0{
-    opacity: 0;
-}

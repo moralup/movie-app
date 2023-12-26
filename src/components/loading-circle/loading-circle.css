@@ -1,16 +1,14 @@
 .loading-circle {
+  position: relative;
   display: block;
-  color: #2295fe;
-  font-size: 10px;
   width: 1em;
   height: 1em;
+  font-size: 10px;
+  margin: 90px auto;
+  color: #2295fe;
   border-radius: 50%;
-  position: relative;
-  /* text-indent: -9999em; */
   animation: mulShdSpin 1.3s infinite linear;
   transform: translateZ(0);
-  margin: 90px auto;
-
 }
 
 @keyframes mulShdSpin {

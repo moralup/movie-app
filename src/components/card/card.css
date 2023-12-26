@@ -1,8 +1,3 @@
-p, div{
-    margin: 0;
-    padding: 0;
-}
-
 .card{
     display: flex;
     gap: 20px;
@@ -12,7 +7,7 @@ p, div{
     box-shadow: 5px 10px 20px #c2c0c0;
     box-sizing: border-box;
     transition: all .6s ease-in;
-    transition-delay: .1s;
+    transition-delay: .3s;
     background-color: #f7f7f7;
 }
 
@@ -22,13 +17,13 @@ p, div{
 
 .card__close-btn{
     display: none;
-    background: none;
     position: absolute;
-    align-items: center;
     top: 10px;
     left: 10px;
+    align-items: center;
     height: 50px;
     width: 50px;
+    background: none;
     border-radius: 50%;
     z-index: 1;
 }
@@ -42,11 +37,12 @@ p, div{
 
 .card__image-wrap{
     position: absolute;
-    z-index: 1;
     height: 90px;
     width: 60px;
+    z-index: 1;
     background:#f7f7f7;
     transition: opacity .5s ease-in;
+    flex-shrink: 0;
 }
 
 .card__image-wrap img{
@@ -54,8 +50,7 @@ p, div{
     height: inherit;
     transform-origin: top left;
     transition: opacity .7s ease-in;
-    transition-delay: .2s;
-
+    transition-delay: .3s;
 }
 
 .card__image-title{
@@ -63,31 +58,30 @@ p, div{
     position: absolute;
     left: 10px;
     top: 0;
-    font-size: 20px;
-    font-weight: 400;
     width: 130px;
     height: 50px;
     color: #e1e1e1;
-    z-index: -1;
     font-family: 'Star';
-    transition: all 1s ease-in;
+    font-size: 20px;
+    font-weight: 400;
     word-break: break-all;
+    z-index: -1;
+    transition: all 1s ease-in;
 }
 
 .card__info{
     display: flex;
     flex-direction: column;
-    transition: opacity .5s ease-in;
     gap: 7px;
     flex-grow: 1;
     flex-shrink: 1;
+    transition: opacity .5s ease-in;
     position: relative;
 }
 
 .card__header{
-    position: relative;
-    /* height: 48px; */
     display: flex;
+    position: relative;
     align-items: top;
     margin-left: 75px;
 }
@@ -98,49 +92,48 @@ p, div{
     height: 25px;
     font-size: 20px;
     font-weight: 400;
+    word-break:break-all;
     overflow: hidden;
-    word-break:break-all
 }
 
 .card__rating-circle{
     position: absolute;
-    width: 34px;
-    height: 34px;
     right: 0;
     top: 0;
-    border-radius: 50%;
-    border: 2px solid;
+    width: 34px;
+    height: 34px;
     text-align: center;
     align-self: flex-start;
     padding-top: 7px;
+    border-radius: 50%;
+    border: 2px solid;
     font-size: 12px;
     box-sizing: border-box;
 }
 
-
 .card__rating-wrap{
     position: relative;
     height: 30px;
+    width: 210px;
     margin-left: auto;
-    width: 210px
 }
 
 .card__rating{
-    width: 0px;
-    cursor: context-menu;
     position: absolute;
     bottom: 5px;
-    color:#fadb14;
+    width: 0px;
     font-size: 20px;
+    color:#fadb14;
+    cursor: context-menu;
     overflow-x: hidden;
 }
 
 .card__rating-background{
-    color:#e0dddd;
-    cursor: context-menu;
     position: absolute;
     bottom: 5px;
     font-size: 20px;
+    color:#e0dddd;
+    cursor: context-menu;
 }
 
 .card__rating-circle_select{
@@ -148,12 +141,12 @@ p, div{
     top: -40px;
     left: 0;
     opacity: 0;
-    transition: all .3s ease, opacity 1s ease;
+    transition: all .3s ease, opacity .5s ease;
 }
 
 .card__date{
-    margin-left: 75px;
     color: #827E7E;
+    margin-left: 75px;
     margin-top: -7px;
 }
 
@@ -161,8 +154,8 @@ p, div{
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 20px;
     height: 23px;
+    margin-bottom: 20px;
     margin-left: 75px;
     overflow-x:scroll;
 }
@@ -176,9 +169,9 @@ p, div{
 
 .card__genre{
     font-family: inherit;
+    padding: 3px 5px;
     border: 1px #D9D9D9 solid;
     border-radius: 2px;
-    padding: 3px 5px;
     box-sizing: border-box;
     transition: all 0.3s ease-in-out;    
 }
@@ -189,11 +182,11 @@ p, div{
 }
 
 .card__descriptions{
-    line-height: 22px;    
     height: 90px;
+    line-height: 22px;    
+    margin-bottom: auto;
     overflow: hidden;
     transition: all 0.2s ease-in;
-    margin-bottom: auto
 }
 
 .card__descriptions:hover{
@@ -203,27 +196,4 @@ p, div{
 
 .card__descriptions::-webkit-scrollbar {
     width: 0;
-}
-.background-color, .background-image{
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: -2;
-    width: 100vw;
-    height: 100vh;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    transition-delay: .4s;
-    transition: all .7s ease;
-    opacity: 0;
-}
-
-.background-color{
-    background-color: #f7f7f7;
-    z-index: -1;
-
-}
-
-.opacity02{
-    opacity: 0.2;
 }

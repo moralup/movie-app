@@ -1,15 +1,14 @@
 import { Component } from 'react';
-import { debounce, throttle } from 'lodash';
+import { debounce } from 'lodash';
 import Card from '../card';
+import imageBkColor from '../../images/bk-color.jpg'
 import './movie-list.css';
-import ImageBkColor from '../../images/bk-color.jpg'
-
 
 export default class MovieList extends Component{
     state = {
+        intersecting: [],
         activeMovie: null,
         event: false,
-        intersecting: [],
         scrollUp: false,
     };
     componentDidMount(){
@@ -26,13 +25,16 @@ export default class MovieList extends Component{
         case this.scrollUpBtn.classList.contains('opacity0')&&window.scrollY>3000: this.scrollUpBtn.classList.remove('opacity0'); break;
         }
     };
-    scrollUp = () =>window.scrollY>3000? window.scrollTo(0,0) : null;    
-    stateList = (obj) => this.setState(obj);
-    onBackImg = debounce((backgroundPath, id) => {         
+    
+    scrollUp = () => window.scrollY>3000? window.scrollTo(0,0) : null;    
+    
+    setStateForMovieList = (obj) => this.setState(obj);
+    
+    onBackImg = debounce((backgroundPath) => {         
+        if(!this.bkImg) this.bkImg = document.querySelector('.background-image');
         const url = backgroundPath ? 
             `https://image.tmdb.org/t/p/original${backgroundPath}` :
-            ImageBkColor;
-        if(!this.bkImg) this.bkImg = document.querySelector('.background-image');
+            imageBkColor;
         this.bkImg.src = url;
         this.bkImg.onload = () => {
             if(this.state.event) this.bkImg.style.opacity = 1;
@@ -48,11 +50,11 @@ export default class MovieList extends Component{
         const observe = this.setObserve();
         return this.props.movies.map(movie => {
             const { id, vote_average, title, overview, poster_path,
-                release_date, genres, genre_ids, backdrop_path, notRated } = movie;
-            const active = +this.state.activeMovie === +movie.id;
+                release_date, genres, genre_ids, backdrop_path, notRated, notFound } = movie;
+            const active = this.state.activeMovie === movie.id;
             const visible = this.state.intersecting.includes(movie.id.toString());
             const isRated = (this.props.ratedMovie.find(({ id }) => +id === +movie.id));
-            const rating = isRated ? +isRated.rating : 0;
+            const rating = isRated? +isRated.rating : 0;
             return (
                 <Card
                     key={id}
@@ -60,7 +62,7 @@ export default class MovieList extends Component{
                     voteAverage={vote_average} 
                     title={title}
                     overview={overview}
-                    img={poster_path}
+                    posterPath={poster_path}
                     date={release_date}
                     genres={genres}
                     rating={rating}
@@ -71,19 +73,16 @@ export default class MovieList extends Component{
                     visible={visible}
                     event={this.state.event}
                     setObserve={observe}
-                    stateList={this.stateList}
+                    setStateForMovieList={this.setStateForMovieList}
                     onBackImg={this.onBackImg}
                     offBackImg={this.offBackImg}
                     notRated={notRated}
+                    notFound={notFound}
                 />
-            );    
-        });
-    };
-
-
+            );});};
 
     setObserve = () => {
-        if(window.innerWidth < 1024) return false
+        if(window.innerWidth < 1024) return false;
         const option = {
             root: null,
             rootMargin: '5px',

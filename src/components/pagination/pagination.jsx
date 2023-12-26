@@ -1,8 +1,6 @@
 import { Component } from 'react';
 import './pagination.css';
 
-
-
 export default class Pagination extends Component{
     state = {
         activePage: 1,

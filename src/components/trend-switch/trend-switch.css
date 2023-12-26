@@ -1,36 +1,35 @@
 .trend-switch{
-    box-sizing: border-box;
     position: relative;
     width: 100%;
     border: 3px solid #0462ba;
     border-radius: 50px;
+    box-sizing: border-box;
 }
 
 .trend-switch__btn{
     height: 40px;
     width: 50%;
+    border-radius: 50px;
     background-color: #f7f7f7;
     transition: all 0.5s ease-in-out;
-    border-radius: 50px;
 }
 
 .trend-switch__stick{
     position: absolute;
+    top: 0px;
+    width: 55%;
+    height: 40px;
     text-align: center;
     line-height: 40px;
     color: #f7f7f7;
-    top: 0px;
-    width: 55%;
-    /* max-width: 500px; */
-    height: 40px;
-    background-color: #1890FF;  
     border-radius: 50px;
+    background-color: #1890FF;  
     transition: all 1s ease-in-out;
 }
 
 .trend-switch__stick-text{
-    font-size: 14px;
     font-family: Arial;
+    font-size: 14px;
     text-transform: capitalize;
     transition: opacity .5s linear;    
 }

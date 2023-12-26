@@ -1,25 +1,25 @@
 .loading-snake{
+  position: relative;
     display: block;
-    position: relative;
     height: 12px;
+    width: 210px;
+    margin-left: auto;
+    margin-bottom: 10px;
     border: 1px solid #fff;
     border-radius: 10px;
     overflow: hidden;
-    margin-left: auto;
-    width: 210px;
-    margin-bottom: 10px
   }
   .loading-snake:after{
-    content: '';
     position: absolute;
     left: 0;
     top: 0;
     height: 100%;
     width: 0;
+    content: '';
     background: #1890FF;
     animation: 0.5s prog ease-in infinite;
   }
   
   @keyframes prog {
-    to { width: 100%; background: red, }
+    to { width: 100% }
   }
