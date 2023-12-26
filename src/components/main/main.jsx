@@ -4,7 +4,8 @@ import Pagination from '../pagination';
 import LoadingCircle from '../loading-circle';
 
 const Main = (props) => {
-    let { movies=[], loading, tab, ratedMovie,
+    let { movies=[] } = props;
+    const { loading, tab, ratedMovie,
         setMovieRating, totalPages, movieTitle, getMovies } = props;
     const mainContent = () => {
         if(loading) return <LoadingCircle/>; 

@@ -7,7 +7,7 @@ export default class TabSwitch extends Component{
     };
 
     onLabelClick = (event) => {
-        const activeTab = event.target.id
+        const activeTab = event.target.id;
         if(this.props.loading||this.state.activeTab===activeTab) return;
         this.props.getMovies('', '', 'day', activeTab);
         this.setState({ activeTab });

@@ -10,7 +10,8 @@
         "jsx-quotes": ["error", "prefer-double"],
         "indent": ["warn", 4],
         "default-case":"off",
-        "max-len": ["warn", {"code": 130}],
+        "jsx-a11y/alt-text": "off",
+        // "max-len": ["warn", {"code": 130}],
         "comma-dangle": ["error", "always-multiline"],
         "semi": ["warn", "always"],
         "import/order": ["error", {

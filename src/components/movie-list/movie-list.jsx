@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { debounce } from 'lodash';
 import Card from '../card';
-import imageBkColor from '../../images/bk-color.jpg'
+import imageBkColor from '../../images/bk-color.jpg';
 import './movie-list.css';
 
 export default class MovieList extends Component{
@@ -91,17 +91,17 @@ export default class MovieList extends Component{
             entries.forEach(entry => {
                 if(entry.isIntersecting){
                     if(this.state.intersecting.includes(entry.target.id)) return;
-                    this.setState(state => ({ intersecting: [...state.intersecting, entry.target.id] }))
+                    this.setState(state => ({ intersecting: [...state.intersecting, entry.target.id] }));
                 } else {
                     if(!this.state.intersecting.includes(entry.target.id)) return;
                     this.setState(state => {
-                        return { intersecting: state.intersecting.filter(id => id != entry.target.id) }
-                    })
+                        return { intersecting: state.intersecting.filter(id => id !== entry.target.id) };
+                    });
                 }
             });
         };
         const observer = new IntersectionObserver(callback, option);      
-        return (id) => observer.observe(document.getElementById(id)) 
+        return (id) => observer.observe(document.getElementById(id)); 
     };
 
     render(){

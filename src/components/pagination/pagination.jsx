@@ -12,7 +12,7 @@ export default class Pagination extends Component{
         const { totalPages } = this.props;
         if(totalPages<=5){
             for(let i = 1; i<=totalPages; i++){
-                list.push(i)
+                list.push(i);
             }
         } else{
             list = [1, 2, 3];
@@ -37,7 +37,7 @@ export default class Pagination extends Component{
     onPrevPages = () => {
         if(this.state.pageNums[0] === 1 ) return;
         const pageNums = this.state.pageNums.map(item => --item);
-        if(+this.state.activePage === +this.state.pageNums[0]) this.setState({ pageNums })
+        if(+this.state.activePage === +this.state.pageNums[0]) this.setState({ pageNums });
         else this.setState({ pageNums, activePage: pageNums[2] });
     };
     
@@ -45,14 +45,14 @@ export default class Pagination extends Component{
         const { totalPages } = this.props;
         if(totalPages <= 5 || totalPages-this.state.pageNums.at(-1)===2) return;
         const pageNums = this.state.pageNums.map(item => ++item);
-        if(+this.state.activePage === +this.state.pageNums[2]) this.setState({ pageNums })
+        if(+this.state.activePage === +this.state.pageNums[2]) this.setState({ pageNums });
         else this.setState({ pageNums, activePage: pageNums[0] });
     };
 
     createList = () => {
         const { totalPages } = this.props;
-        const fourthNum = totalPages-this.state.pageNums.at(-1)===2 ? totalPages-1 : '...'
-        const list = totalPages <= 5 ? this.state.pageNums : [...this.state.pageNums, fourthNum, totalPages]
+        const fourthNum = totalPages-this.state.pageNums.at(-1)===2 ? totalPages-1 : '...';
+        const list = totalPages <= 5 ? this.state.pageNums : [...this.state.pageNums, fourthNum, totalPages];
         return list.map(item => {
             return (
                 <li key={item}
@@ -62,7 +62,7 @@ export default class Pagination extends Component{
                         'pagination__num-page'}>{item}</li>
             );
         });
-    }
+    };
 
     render(){
         return (

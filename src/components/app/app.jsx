@@ -60,7 +60,7 @@ export default class App extends Component{
     };
     setStateForApp = (obj) => {
         this.setState(obj);
-    }
+    };
     render(){
         const { loading, tab, genres, title, movies, page, totalPages, ratedMovie } = this.state;
         return (

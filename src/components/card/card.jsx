@@ -25,7 +25,7 @@ class RatingStars extends Component{
         if(this.state.error||this.props.notFound) return;
         const rating = this.getRatPos(event)[0];
         if(this.props.notRated){
-            document.querySelector('.card__title').textContent = 'rated'
+            document.querySelector('.card__title').textContent = 'rated';
             document.querySelector('.card__descriptions').innerHTML = 'you havent rated any movie <b>except this one</b>';
             this.stopVoteMovie();
             this.setState({ error: true, rating });   
@@ -91,7 +91,7 @@ export default class Card extends Component{
         if(this.props.setObserve) this.props.setObserve(this.props.id);
     };
     shouldComponentUpdate(nextProps, nextState){                   
-        return (nextProps.visible&&(this.props.event!==nextProps.event||(this.props.visible!==nextProps.visible&&((this.cardRef.current.style.opacity&&!nextProps.event)||(nextProps.event&&!this.cardRef.current.style.opacity&&!nextProps.active)))||this.props.active!==nextProps.active))
+        return (nextProps.visible&&(this.props.event!==nextProps.event||(this.props.visible!==nextProps.visible&&((this.cardRef.current.style.opacity&&!nextProps.event)||(nextProps.event&&!this.cardRef.current.style.opacity&&!nextProps.active)))||this.props.active!==nextProps.active));
     };
 
     defineColor = (num) => {
@@ -106,7 +106,7 @@ export default class Card extends Component{
     };
     
     getGenresList = (genresID, genresName) => {
-        if(!Array.isArray(genresID)) return <p className="card__genre">no genres</p>
+        if(!Array.isArray(genresID)) return <p className="card__genre">no genres</p>;
         return genresID.map((id, i) => {
             const genre = genresName.genres.find(objGen => id === objGen.id);                
             return <li
@@ -134,7 +134,7 @@ export default class Card extends Component{
         const card = this.cardRef.current;
         const [imageWrap, description] = card.children;       
         const [closeImgBtn, image] = imageWrap.children;
-        description.style.opacity = imageWrap.style.opacity = 0 
+        description.style.opacity = imageWrap.style.opacity = 0; 
         card.style.height = `${cardWidth*1.5}px`;
         window.scrollTo({
             top: window.scrollY+card.getBoundingClientRect().y-20,
@@ -165,7 +165,7 @@ export default class Card extends Component{
             image.style.transform = 'scale(1)';
         }, 500);
         setTimeout(() => {
-            description.style.opacity = imageWrap.style.opacity = 1 
+            description.style.opacity = imageWrap.style.opacity = 1; 
             if(this.coordinates) window.scrollTo({ top: this.coordinates, behavior: 'smooth' });
         }, 1200);
     };
